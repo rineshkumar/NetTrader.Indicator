@@ -1,0 +1,10 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/NetTrader.Indicator/v15
+/NetTrader.Indicator/obj/Debug
+/NetTrader.Indicator/bin/Debug
+/NetTrader.Indicator.Test/obj/Debug
+/NetTrader.Indicator.Test/bin/Debug
+/packages/LumenWorksCsvReader.3.9.1
