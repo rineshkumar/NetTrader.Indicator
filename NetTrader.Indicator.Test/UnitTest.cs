@@ -100,6 +100,7 @@ namespace NetTrader.Indicator.Test
         {
             //MACD macd = new MACD();
             MACD macd = new MACD(false);
+            //https://au.finance.yahoo.com/quote/ASX.AX/history?p=ASX.AX
             macd.Load(Directory.GetCurrentDirectory() + "\\table.csv");
             MACDSerie serie = macd.Calculate();
 
