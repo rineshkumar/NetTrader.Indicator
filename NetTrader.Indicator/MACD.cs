@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NetTrader.Indicator
 {
@@ -15,8 +12,8 @@ namespace NetTrader.Indicator
         protected bool Percent = false;
 
         public MACD()
-        { 
-            
+        {
+
         }
 
         public MACD(bool percent)
@@ -42,7 +39,7 @@ namespace NetTrader.Indicator
         public override MACDSerie Calculate()
         {
             MACDSerie macdSerie = new MACDSerie();
-            
+
             EMA ema = new EMA(Fast, false);
             ema.Load(OhlcList);
             List<double?> fastEmaValues = ema.Calculate().Values;
@@ -55,10 +52,10 @@ namespace NetTrader.Indicator
             {
                 // MACD Line
                 if (fastEmaValues[i].HasValue && slowEmaValues[i].HasValue)
-                {   
+                {
                     if (!Percent)
                     {
-                        macdSerie.MACDLine.Add(fastEmaValues[i].Value - slowEmaValues[i].Value);    
+                        macdSerie.MACDLine.Add(fastEmaValues[i].Value - slowEmaValues[i].Value);
                     }
                     else
                     {
@@ -73,7 +70,7 @@ namespace NetTrader.Indicator
                     OhlcList[i].Close = 0.0;
                 }
             }
-                
+
             int zeroCount = macdSerie.MACDLine.Where(x => x == null).Count();
             ema = new EMA(Signal, false);
             ema.Load(OhlcList.Skip(zeroCount).ToList());
@@ -88,7 +85,21 @@ namespace NetTrader.Indicator
             {
                 macdSerie.Signal.Add(signalEmaValues[i]);
 
-                macdSerie.MACDHistogram.Add(macdSerie.MACDLine[i] - macdSerie.Signal[i]);
+                //macdSerie.MACDHistogram.Add(macdSerie.MACDLine[i] - macdSerie.Signal[i]);
+                macdSerie.MACDHistogram.Add(new MACDHistogramData() { DataDate = OhlcList[i].Date, EmaLineDifference = macdSerie.MACDLine[i] - macdSerie.Signal[i] });
+
+            }
+            for (int i = 0; i < macdSerie.MACDHistogram.Count; i++)
+            {
+                if (i != 0 &&
+                    macdSerie.MACDHistogram.ElementAt(i).EmaLineDifference != null &&
+                    macdSerie.MACDHistogram.ElementAt(i - 1).EmaLineDifference != null)
+                {
+                    macdSerie.MACDHistogram.ElementAt(i).DataDirection =
+                        macdSerie.MACDHistogram.ElementAt(i).EmaLineDifference -
+                        macdSerie.MACDHistogram.ElementAt(i - 1).EmaLineDifference > 0 ?
+                        "Increasing" : "Decreasing";
+                }
             }
 
             return macdSerie;

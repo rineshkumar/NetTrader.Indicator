@@ -65,6 +65,7 @@
     <Compile Include="IIndicatorSerie.cs" />
     <Compile Include="IndicatorCalculatorBase.cs" />
     <Compile Include="MACD.cs" />
+    <Compile Include="MACDHistogramData.cs" />
     <Compile Include="MACDSerie.cs" />
     <Compile Include="Momentum.cs" />
     <Compile Include="OBV.cs" />

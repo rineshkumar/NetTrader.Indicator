@@ -1,21 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace NetTrader.Indicator
 {
     public class MACDSerie : IIndicatorSerie
     {
         public List<double?> MACDLine { get; set; }
-        public List<double?> MACDHistogram { get; set; }
+        public List<MACDHistogramData> MACDHistogram { get; set; }
         public List<double?> Signal { get; set; }
 
-        public MACDSerie() 
+        public MACDSerie()
         {
             this.MACDLine = new List<double?>();
-            this.MACDHistogram = new List<double?>();
+            this.MACDHistogram = new List<MACDHistogramData>();
             this.Signal = new List<double?>();
         }
     }
