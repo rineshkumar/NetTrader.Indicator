@@ -14,3 +14,7 @@
 /NetTrader.Contract/obj/Debug/NetTrader.Contract.pdb
 /NetTrader.Contract/obj/Debug/NetTrader.Contract.exe
 /NetTrader.Contract/obj/Debug/NetTrader.Contract.csproj.FileListAbsolute.txt
+/.vs
+/NetTrader.Indicator/obj/Release/NetTrader.Indicator.csproj.CoreCompileInputs.cache
+/NetTrader.Indicator.Test/obj/Release
+/packages

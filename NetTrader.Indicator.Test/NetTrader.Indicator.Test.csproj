@@ -56,7 +56,13 @@
     <Compile Include="UnitTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="stw.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="table.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="vas.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

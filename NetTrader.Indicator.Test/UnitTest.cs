@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NetTrader.Indicator.Utilities;
 using System.IO;
 
 namespace NetTrader.Indicator.Test
@@ -98,18 +99,28 @@ namespace NetTrader.Indicator.Test
         [TestMethod]
         public void MACD()
         {
+            //File.Delete(@"MacdHData.xlsx");
             //MACD macd = new MACD();
             MACD macd = new MACD(false);
             //https://au.finance.yahoo.com/quote/ASX.AX/history?p=ASX.AX
-            macd.Load(Directory.GetCurrentDirectory() + "\\table.csv");
-            MACDSerie serie = macd.Calculate();
-
+            //https://au.finance.yahoo.com/quote/VAS.AX/
+            MACDSerie serie = GenerateMacdHistogramData(macd, "vas");
+            macd = new MACD(false);
+            serie = GenerateMacdHistogramData(macd, "stw");
             Assert.IsNotNull(serie);
             Assert.IsTrue(serie.Signal.Count > 0);
             Assert.IsTrue(serie.MACDLine.Count > 0);
             Assert.IsTrue(serie.MACDHistogram.Count > 0);
             //serie.MACDHistogram.Select((x,i) => new {i, value = x.GetValueOrDefault(),Consider = x != null &&  x.Value < 0 && x.Value >-1 }).Where(x => x.Consider)
             //serie.MACDHistogram.ElementAt(i-1) if its negative and > current negative value between 0 and -1 , good time to buy 
+        }
+
+        private static MACDSerie GenerateMacdHistogramData(MACD macd, string stockName)
+        {
+            macd.Load(Directory.GetCurrentDirectory() + "\\" + stockName + ".csv");
+            MACDSerie serie = macd.Calculate();
+            ExcelUtilities.WriteMacdhistogramDataToExcel(serie, stockName);
+            return serie;
         }
 
         [TestMethod]
