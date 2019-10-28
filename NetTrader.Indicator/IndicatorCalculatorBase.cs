@@ -20,10 +20,13 @@ namespace NetTrader.Indicator
                 while (csv.ReadNextRecord())
                 {
                     Ohlc ohlc = new Ohlc();
+
                     for (int i = 0; i < fieldCount; i++)
                     {
+                        if (csv[i] == "null")
+                            continue;
                         switch (headers[i])
-                        {   
+                        {
                             case "Date":
                                 ohlc.Date = new DateTime(Int32.Parse(csv[i].Substring(0, 4)), Int32.Parse(csv[i].Substring(5, 2)), Int32.Parse(csv[i].Substring(8, 2)));
                                 break;
@@ -52,7 +55,7 @@ namespace NetTrader.Indicator
 
                     OhlcList.Add(ohlc);
                 }
-            }    
+            }
         }
 
         public virtual void Load(List<Ohlc> ohlcList)
