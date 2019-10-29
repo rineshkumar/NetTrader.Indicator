@@ -102,11 +102,16 @@ namespace NetTrader.Indicator.Test
             //File.Delete(@"MacdHData.xlsx");
             //MACD macd = new MACD();
             MACD macd = new MACD(false);
-            //https://au.finance.yahoo.com/quote/ASX.AX/history?p=ASX.AX
+
             //https://au.finance.yahoo.com/quote/VAS.AX/
-            MACDSerie serie = GenerateMacdHistogramData(macd, "vas");
-            macd = new MACD(false);
-            serie = GenerateMacdHistogramData(macd, "stw");
+            //https://au.finance.yahoo.com/quote/STW.AX/
+            //https://au.finance.yahoo.com/quote/APT.AX
+            //MACDSerie serie = GenerateMacdHistogramData(macd, "vas"); q q
+            //macd = new MACD(false);
+            //serie = GenerateMacdHistogramData(macd, "stw");
+            //macd = new MACD(false);
+            //serie = GenerateMacdHistogramData(macd, "apt");
+            MACDSerie serie = GenerateMacdHistogramData(macd, "ioo");
             Assert.IsNotNull(serie);
             Assert.IsTrue(serie.Signal.Count > 0);
             Assert.IsTrue(serie.MACDLine.Count > 0);

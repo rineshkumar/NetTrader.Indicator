@@ -8,7 +8,7 @@ namespace NetTrader.Indicator.Utilities
     {
         public static void WriteMacdhistogramDataToExcel(MACDSerie mACDSerie, string sheetName)
         {
-            var subset = mACDSerie.MACDHistogram.GetRange(mACDSerie.MACDHistogram.Count - 50, 50);
+            var subset = mACDSerie.MACDHistogram.GetRange(mACDSerie.MACDHistogram.Count - 30, 30);
             //Search For the template file
 
             XSSFWorkbook workbook;
