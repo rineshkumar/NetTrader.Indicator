@@ -115,7 +115,7 @@ namespace NetTrader.Indicator.Test
             Assert.IsNotNull(serie);
             Assert.IsTrue(serie.Signal.Count > 0);
             Assert.IsTrue(serie.MACDLine.Count > 0);
-            Assert.IsTrue(serie.MACDHistogram.Count > 0);
+            Assert.IsTrue(serie.MACDHistogramDataList.Count > 0);
             //serie.MACDHistogram.Select((x,i) => new {i, value = x.GetValueOrDefault(),Consider = x != null &&  x.Value < 0 && x.Value >-1 }).Where(x => x.Consider)
             //serie.MACDHistogram.ElementAt(i-1) if its negative and > current negative value between 0 and -1 , good time to buy 
         }

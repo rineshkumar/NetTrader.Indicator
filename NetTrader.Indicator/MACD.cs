@@ -86,23 +86,112 @@ namespace NetTrader.Indicator
                 macdSerie.Signal.Add(signalEmaValues[i]);
 
                 //macdSerie.MACDHistogram.Add(macdSerie.MACDLine[i] - macdSerie.Signal[i]);
-                macdSerie.MACDHistogram.Add(new MACDHistogramData() { DataDate = OhlcList[i].Date, EmaLineDifference = macdSerie.MACDLine[i] - macdSerie.Signal[i] });
+                macdSerie.MACDHistogramDataList.Add(new MACDHistogramData() { DataDate = OhlcList[i].Date, EmaLineDifference = macdSerie.MACDLine[i] - macdSerie.Signal[i] });
 
             }
-            for (int i = 0; i < macdSerie.MACDHistogram.Count; i++)
+            /*
+             * 1. Difference between MACD and signal line - For plotting histogram
+             * 2. Distance between difference - To find the peak-through- slant pattens 
+             * 3. For decreasing pattern we need to find the point when the decrease intensity reduces
+             */
+            for (int i = 1; i < macdSerie.MACDHistogramDataList.Count; i++)
             {
-                if (i != 0 &&
-                    macdSerie.MACDHistogram.ElementAt(i).EmaLineDifference != null &&
-                    macdSerie.MACDHistogram.ElementAt(i - 1).EmaLineDifference != null)
+                if (
+                    macdSerie.MACDHistogramDataList.ElementAt(i).EmaLineDifference != null &&
+                    macdSerie.MACDHistogramDataList.ElementAt(i - 1).EmaLineDifference != null)
                 {
-                    macdSerie.MACDHistogram.ElementAt(i).DataDirection =
-                        macdSerie.MACDHistogram.ElementAt(i).EmaLineDifference -
-                        macdSerie.MACDHistogram.ElementAt(i - 1).EmaLineDifference > 0 ?
-                        "Increasing" : "Decreasing";
+                    SetConvergenceDivergence(macdSerie.MACDHistogramDataList.ElementAt(i - 1), macdSerie.MACDHistogramDataList.ElementAt(i));
+
+                    /* For ith Element 
+                     * (i-1) - (1) < (i-2)-(i-1) 
+                     */
+                    macdSerie.MACDHistogramDataList.ElementAt(i).isDiffereneAmountDecreasing =
+                        (
+                        macdSerie.MACDHistogramDataList.ElementAt(i - 1).EmaLineDifference -
+                        macdSerie.MACDHistogramDataList.ElementAt(i).EmaLineDifference) <
+                        (
+                        macdSerie.MACDHistogramDataList.ElementAt(i - 2).EmaLineDifference -
+                        macdSerie.MACDHistogramDataList.ElementAt(i - 1).EmaLineDifference
+                        ) ? true : false;
+
                 }
             }
 
             return macdSerie;
+        }
+
+        private void SetConvergenceDivergence(MACDHistogramData previousElement, MACDHistogramData currentElement)
+        {
+            var currentDataPoint = currentElement.EmaLineDifference;
+            var previousDataPoint = previousElement.EmaLineDifference;
+            if (previousDataPoint > 0)
+            {
+                if (currentDataPoint > 0)
+                {
+                    if (currentDataPoint > previousDataPoint)
+                    {
+                        currentElement.isConvergingOrDiverging = "PositiveDiverging";
+                    }
+                    else if (currentDataPoint < previousDataPoint)
+                    {
+                        currentElement.isConvergingOrDiverging = "PositiveConverging";
+                    }
+                }
+                else if (currentDataPoint == 0)
+                {
+                    currentElement.isConvergingOrDiverging = "PositiveConverging";
+                }
+                else if (currentDataPoint < 0)
+                {
+                    currentElement.isConvergingOrDiverging = "NegativeDiverging";
+                }
+
+            }
+            else if (previousDataPoint == 0)
+            {
+
+                if (currentDataPoint > 0)
+                {
+                    currentElement.isConvergingOrDiverging = "PositiveDiverging";
+
+                }
+                else if (currentDataPoint == 0)
+                {
+                    currentElement.isConvergingOrDiverging = "ZeroDivergence";
+                }
+                else if (currentDataPoint < 0)
+                {
+                    currentElement.isConvergingOrDiverging = "NegativeDiverging";
+                }
+
+            }
+            else if (previousDataPoint < 0)
+            {
+
+                if (currentDataPoint > 0)
+                {
+                    currentElement.isConvergingOrDiverging = "PositiveDiverging";
+
+                }
+                else if (currentDataPoint == 0)
+                {
+                    currentElement.isConvergingOrDiverging = "NegativeConverging";
+                }
+                else if (currentDataPoint < 0)
+                {
+                    if (currentDataPoint > previousDataPoint)
+                    {
+                        currentElement.isConvergingOrDiverging = "NegativeConverging";
+                    }
+                    else if (currentDataPoint < previousDataPoint)
+                    {
+                        currentElement.isConvergingOrDiverging = "NegativeDiverging";
+                    }
+                }
+
+            }
+
+
         }
     }
 }

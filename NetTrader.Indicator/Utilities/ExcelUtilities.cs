@@ -8,7 +8,7 @@ namespace NetTrader.Indicator.Utilities
     {
         public static void WriteMacdhistogramDataToExcel(MACDSerie mACDSerie, string sheetName)
         {
-            var subset = mACDSerie.MACDHistogram.GetRange(mACDSerie.MACDHistogram.Count - 30, 30);
+            var subset = mACDSerie.MACDHistogramDataList.GetRange(mACDSerie.MACDHistogramDataList.Count - 60, 60);
             //Search For the template file
 
             XSSFWorkbook workbook;
@@ -31,8 +31,9 @@ namespace NetTrader.Indicator.Utilities
                 {
                     var row = sheet.CreateRow(i);
                     row.CreateCell(0).SetCellValue(item.DataDate.Date);
-                    row.CreateCell(1).SetCellValue(item.DataDirection);
+                    row.CreateCell(1).SetCellValue(item.isConvergingOrDiverging);
                     row.CreateCell(2).SetCellValue(item.EmaLineDifference.Value);
+                    row.CreateCell(3).SetCellValue(item.isDiffereneAmountDecreasing);
                     i++;
                 }
 
