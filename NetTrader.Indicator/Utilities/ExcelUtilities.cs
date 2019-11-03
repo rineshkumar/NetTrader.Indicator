@@ -1,12 +1,13 @@
 ﻿using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using System.IO;
+using System.Linq;
 
 namespace NetTrader.Indicator.Utilities
 {
     public class ExcelUtilities
     {
-        public static void WriteMacdhistogramDataToExcel(MACDSerie mACDSerie, string sheetName)
+        public static void WriteMacdhistogramDataToExcel(MACDSerie mACDSerie, RSISerie rsiSeries, string sheetName)
         {
             var subset = mACDSerie.MACDHistogramDataList.GetRange(mACDSerie.MACDHistogramDataList.Count - 60, 60);
             //Search For the template file
@@ -30,10 +31,17 @@ namespace NetTrader.Indicator.Utilities
                 foreach (var item in subset)
                 {
                     var row = sheet.CreateRow(i);
+                    var rsiData = rsiSeries.rsiDataPoints.Where(x => x.Date == item.DataDate).FirstOrDefault();
                     row.CreateCell(0).SetCellValue(item.DataDate.Date);
                     row.CreateCell(1).SetCellValue(item.isConvergingOrDiverging);
                     row.CreateCell(2).SetCellValue(item.EmaLineDifference.Value);
-                    row.CreateCell(3).SetCellValue(item.isDiffereneAmountDecreasing);
+                    row.CreateCell(3).SetCellValue(item.changeInDivergenceMomentum.Value);
+                    row.CreateCell(4).SetCellValue(item.isDiffereneAmountDecreasing);
+                    if (rsiData != null)
+                    {
+                        row.CreateCell(5).SetCellValue(rsiData.RSI.Value);
+                    }
+
                     i++;
                 }
 

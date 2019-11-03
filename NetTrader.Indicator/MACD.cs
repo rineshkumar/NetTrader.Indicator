@@ -101,7 +101,7 @@ namespace NetTrader.Indicator
                     macdSerie.MACDHistogramDataList.ElementAt(i - 1).EmaLineDifference != null)
                 {
                     SetConvergenceDivergence(macdSerie.MACDHistogramDataList.ElementAt(i - 1), macdSerie.MACDHistogramDataList.ElementAt(i));
-
+                    SetChangeInMomentum(macdSerie.MACDHistogramDataList.ElementAt(i - 1), macdSerie.MACDHistogramDataList.ElementAt(i));
                     /* For ith Element 
                      * (i-1) - (1) < (i-2)-(i-1) 
                      */
@@ -118,6 +118,12 @@ namespace NetTrader.Indicator
             }
 
             return macdSerie;
+        }
+
+        private void SetChangeInMomentum(MACDHistogramData previousElement, MACDHistogramData currentElement)
+        {
+            currentElement.changeInDivergenceMomentum = previousElement.EmaLineDifference - currentElement.EmaLineDifference;
+
         }
 
         private void SetConvergenceDivergence(MACDHistogramData previousElement, MACDHistogramData currentElement)

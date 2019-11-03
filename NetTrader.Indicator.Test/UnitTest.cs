@@ -1,5 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NetTrader.Indicator.Utilities;
 using System.IO;
 
 namespace NetTrader.Indicator.Test
@@ -66,12 +65,12 @@ namespace NetTrader.Indicator.Test
         public void RSI()
         {
             RSI rsi = new RSI(14);
-            rsi.Load(Directory.GetCurrentDirectory() + "\\table.csv");
+            rsi.Load(Directory.GetCurrentDirectory() + "\\vas.csv");
             RSISerie serie = rsi.Calculate();
 
             Assert.IsNotNull(serie);
-            Assert.IsTrue(serie.RS.Count > 0);
-            Assert.IsTrue(serie.RSI.Count > 0);
+            //Assert.IsTrue(serie.rsiDataPoint.RS.Count > 0);
+            //Assert.IsTrue(serie.rsiDataPoint.RSI.Count > 0);
         }
 
         [TestMethod]
@@ -111,7 +110,8 @@ namespace NetTrader.Indicator.Test
             //serie = GenerateMacdHistogramData(macd, "stw");
             //macd = new MACD(false);
             //serie = GenerateMacdHistogramData(macd, "apt");
-            MACDSerie serie = GenerateMacdHistogramData(macd, "ioo");
+            macd.Load(Directory.GetCurrentDirectory() + "\\" + "table" + ".csv");
+            MACDSerie serie = macd.Calculate();
             Assert.IsNotNull(serie);
             Assert.IsTrue(serie.Signal.Count > 0);
             Assert.IsTrue(serie.MACDLine.Count > 0);
@@ -120,13 +120,7 @@ namespace NetTrader.Indicator.Test
             //serie.MACDHistogram.ElementAt(i-1) if its negative and > current negative value between 0 and -1 , good time to buy 
         }
 
-        private static MACDSerie GenerateMacdHistogramData(MACD macd, string stockName)
-        {
-            macd.Load(Directory.GetCurrentDirectory() + "\\" + stockName + ".csv");
-            MACDSerie serie = macd.Calculate();
-            ExcelUtilities.WriteMacdhistogramDataToExcel(serie, stockName);
-            return serie;
-        }
+
 
         [TestMethod]
         public void Aroon()

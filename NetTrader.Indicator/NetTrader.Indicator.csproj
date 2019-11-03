@@ -89,6 +89,7 @@
     <Compile Include="PVT.cs" />
     <Compile Include="ROC.cs" />
     <Compile Include="RSI.cs" />
+    <Compile Include="RsiDataPoint.cs" />
     <Compile Include="RSISerie.cs" />
     <Compile Include="SAR.cs" />
     <Compile Include="SingleDoubleSerie.cs" />

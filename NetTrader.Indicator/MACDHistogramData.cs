@@ -11,6 +11,6 @@ namespace NetTrader.Indicator
         public string EmaLineDistance { get; set; }
 
         public bool isDiffereneAmountDecreasing { get; internal set; }
-
+        public double? changeInDivergenceMomentum { get; internal set; }
     }
 }

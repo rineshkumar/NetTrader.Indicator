@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NetTrader.Indicator
 {
@@ -35,8 +32,7 @@ namespace NetTrader.Indicator
             RSISerie rsiSerie = new RSISerie();
 
             // Add null values for first item, iteration will start from second item of OhlcList
-            rsiSerie.RS.Add(null);
-            rsiSerie.RSI.Add(null);
+            rsiSerie.rsiDataPoints.Add(new RsiDataPoint() { RS = null, RSI = null, Date = OhlcList[0].Date });
             change.Add(null);
 
             for (int i = 1; i < OhlcList.Count; i++)
@@ -46,16 +42,18 @@ namespace NetTrader.Indicator
                     var averageGain = change.Where(x => x > 0).Sum() / change.Count;
                     var averageLoss = change.Where(x => x < 0).Sum() * (-1) / change.Count;
                     var rs = averageGain / averageLoss;
-                    rsiSerie.RS.Add(rs);
+
+                    //rsiSerie.rsiDataPoints.RS.Add(rs);
                     var rsi = 100 - (100 / (1 + rs));
-                    rsiSerie.RSI.Add(rsi);
+                    //rsiSerie.rsiDataPoint.RSI.Add(rsi);
+                    //rsiSerie.rsiDataPoint.Date = OhlcList[i].Date;
+                    rsiSerie.rsiDataPoints.Add(new RsiDataPoint() { RS = rs, RSI = rsi, Date = OhlcList[i].Date });
                     // assign change for item
                     change.Add(OhlcList[i].Close - OhlcList[i - 1].Close);
                 }
                 else
-                {   
-                    rsiSerie.RS.Add(null);
-                    rsiSerie.RSI.Add(null);
+                {
+                    rsiSerie.rsiDataPoints.Add(new RsiDataPoint() { RS = null, RSI = null, Date = OhlcList[i].Date });
                     // assign change for item
                     change.Add(OhlcList[i].Close - OhlcList[i - 1].Close);
                 }
