@@ -12,5 +12,6 @@ namespace NetTrader.Indicator
 
         public bool isDiffereneAmountDecreasing { get; internal set; }
         public double? changeInDivergenceMomentum { get; internal set; }
+        public double ClosingValue { get; internal set; }
     }
 }

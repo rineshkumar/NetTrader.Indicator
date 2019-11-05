@@ -46,7 +46,7 @@ namespace NetTrader.Indicator
                                 ohlc.Volume = int.Parse(csv[i]);
                                 break;
                             case "Adj Close":
-                                ohlc.AdjClose = double.Parse(csv[i], CultureInfo.InvariantCulture);
+                                ohlc.AdjClose = ohlc.Close;// double.Parse(csv[i], CultureInfo.InvariantCulture);
                                 break;
                             default:
                                 break;

@@ -86,7 +86,7 @@ namespace NetTrader.Indicator
                 macdSerie.Signal.Add(signalEmaValues[i]);
 
                 //macdSerie.MACDHistogram.Add(macdSerie.MACDLine[i] - macdSerie.Signal[i]);
-                macdSerie.MACDHistogramDataList.Add(new MACDHistogramData() { DataDate = OhlcList[i].Date, EmaLineDifference = macdSerie.MACDLine[i] - macdSerie.Signal[i] });
+                macdSerie.MACDHistogramDataList.Add(new MACDHistogramData() { DataDate = OhlcList[i].Date, EmaLineDifference = macdSerie.MACDLine[i] - macdSerie.Signal[i], ClosingValue = OhlcList[i].AdjClose });
 
             }
             /*
