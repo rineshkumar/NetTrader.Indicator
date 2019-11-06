@@ -17,14 +17,20 @@ namespace NetTrader.Indicator
                 int fieldCount = csv.FieldCount;
                 string[] headers = csv.GetFieldHeaders();
                 OhlcList = new List<Ohlc>();
+                bool addOhlc = true;
                 while (csv.ReadNextRecord())
                 {
-                    Ohlc ohlc = new Ohlc();
 
+                    Ohlc ohlc = new Ohlc();
+                    addOhlc = true;
                     for (int i = 0; i < fieldCount; i++)
                     {
                         if (csv[i] == "null")
-                            continue;
+                        {
+                            addOhlc = false;
+                            break;
+                        }
+
                         switch (headers[i])
                         {
                             case "Date":
@@ -52,8 +58,8 @@ namespace NetTrader.Indicator
                                 break;
                         }
                     }
-
-                    OhlcList.Add(ohlc);
+                    if (addOhlc)
+                        OhlcList.Add(ohlc);
                 }
             }
         }
