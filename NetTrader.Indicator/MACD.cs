@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace NetTrader.Indicator
@@ -132,7 +133,7 @@ namespace NetTrader.Indicator
 
         private void SetChangeInMomentum(MACDHistogramData previousElement, MACDHistogramData currentElement)
         {
-            currentElement.changeInDivergenceMomentum = previousElement.EmaLineDifference - currentElement.EmaLineDifference;
+            currentElement.changeInDivergenceMomentum = Math.Abs(previousElement.EmaLineDifference.Value - currentElement.EmaLineDifference.Value);
 
         }
 
