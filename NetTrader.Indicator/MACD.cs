@@ -4,6 +4,16 @@ using System.Linq;
 
 namespace NetTrader.Indicator
 {
+    public enum MarketSentiment
+    {
+        Bearish,
+        Bullish,
+        Unknown
+    }
+    public enum SignalTypes
+    {
+        BuyWithUpperLimitSet = 2
+    }
     public enum MomentumDirection
     {
         PositiveConvergence,
@@ -107,28 +117,86 @@ namespace NetTrader.Indicator
              */
             for (int i = 1; i < macdSerie.MACDHistogramDataList.Count; i++)
             {
+                MACDHistogramData currentElement = macdSerie.MACDHistogramDataList.ElementAt(i);
+                MACDHistogramData previousElement = macdSerie.MACDHistogramDataList.ElementAt(i - 1);
                 if (
-                    macdSerie.MACDHistogramDataList.ElementAt(i).EmaLineDifference != null &&
-                    macdSerie.MACDHistogramDataList.ElementAt(i - 1).EmaLineDifference != null)
+                    currentElement.EmaLineDifference != null &&
+                    previousElement.EmaLineDifference != null)
                 {
-                    SetConvergenceDivergence(macdSerie.MACDHistogramDataList.ElementAt(i - 1), macdSerie.MACDHistogramDataList.ElementAt(i));
-                    SetChangeInMomentum(macdSerie.MACDHistogramDataList.ElementAt(i - 1), macdSerie.MACDHistogramDataList.ElementAt(i));
+                    SetConvergenceDivergence(previousElement, currentElement);
+                    SetChangeInMomentum(previousElement, currentElement);
                     /* For ith Element 
                      * (i-1) - (1) < (i-2)-(i-1) 
                      */
-                    macdSerie.MACDHistogramDataList.ElementAt(i).isDiffereneAmountDecreasing =
-                        (
-                        macdSerie.MACDHistogramDataList.ElementAt(i - 1).EmaLineDifference -
-                        macdSerie.MACDHistogramDataList.ElementAt(i).EmaLineDifference) <
-                        (
-                        macdSerie.MACDHistogramDataList.ElementAt(i - 2).EmaLineDifference -
-                        macdSerie.MACDHistogramDataList.ElementAt(i - 1).EmaLineDifference
-                        ) ? true : false;
+                    //macdSerie.MACDHistogramDataList.ElementAt(i).isDiffereneAmountDecreasing =
+                    //    (
+                    //    macdSerie.MACDHistogramDataList.ElementAt(i - 1).EmaLineDifference -
+                    //    macdSerie.MACDHistogramDataList.ElementAt(i).EmaLineDifference) <
+                    //    (
+                    //    macdSerie.MACDHistogramDataList.ElementAt(i - 2).EmaLineDifference -
+                    //    macdSerie.MACDHistogramDataList.ElementAt(i - 1).EmaLineDifference
+                    //    ) ? true : false;
+                    if (currentElement.changeInDivergenceMomentum != null && previousElement.changeInDivergenceMomentum != null)
+                    {
+                        currentElement.isDiffereneAmountDecreasing =
+
+                        currentElement.changeInDivergenceMomentum.Value <
+                        previousElement.changeInDivergenceMomentum.Value;
+                    }
+                    SetSignalType(macdSerie, i);
 
                 }
             }
 
             return macdSerie;
+        }
+
+        private static void SetSignalType(MACDSerie macdSerie, int i)
+        {
+
+            if (GetMarketSentiment(macdSerie, i) == MarketSentiment.Bearish
+                && IsBullishTrendContinuing(macdSerie, i) && IsTrendEnding(macdSerie, i) && macdSerie.MACDHistogramDataList.ElementAt(i).EmaLineDifference < -.3)
+            {
+                macdSerie.MACDHistogramDataList.ElementAt(i).ActionSignal = SignalTypes.BuyWithUpperLimitSet;
+            }
+            //else if (IsBullishTrendStarting(macdSerie.MACDHistogramDataList.ElementAt(i)))
+            //{
+            //    macdSerie.MACDHistogramDataList.ElementAt(i).ActionSignal = SignalTypes.BuyWithUpperLimitSet;
+            //}
+        }
+
+        private static bool IsBullishTrendStarting(MACDHistogramData currentElement)
+        {
+            return currentElement.isConvergingOrDiverging == MomentumDirection.PositiveToNegativeDivergence;
+        }
+
+        private static bool IsBullishTrendContinuing(MACDSerie macdSerie, int i)
+        {
+            return macdSerie.MACDHistogramDataList.ElementAt(i).isConvergingOrDiverging == MomentumDirection.NegativeDivergence;
+        }
+
+        private static bool IsTrendEnding(MACDSerie macdSerie, int i)
+        {
+            return macdSerie.MACDHistogramDataList.ElementAt(i).isDiffereneAmountDecreasing;
+        }
+
+        private static MarketSentiment GetMarketSentiment(MACDSerie macdSerie, int i)
+        {
+            MarketSentiment marketSentiment = MarketSentiment.Unknown;
+            switch (macdSerie.MACDHistogramDataList.ElementAt(i).isConvergingOrDiverging)
+            {
+                case MomentumDirection.NegativeDivergence:
+                case MomentumDirection.NegativeConvergence:
+                    marketSentiment = MarketSentiment.Bearish;
+                    break;
+
+                case MomentumDirection.PositiveDivergence:
+                case MomentumDirection.PositiveConvergence:
+                case MomentumDirection.NegativeToPositiveDivergence:
+                    marketSentiment = MarketSentiment.Bullish;
+                    break;
+            }
+            return marketSentiment;
         }
 
         private void SetChangeInMomentum(MACDHistogramData previousElement, MACDHistogramData currentElement)

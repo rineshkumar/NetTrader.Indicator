@@ -39,9 +39,11 @@ namespace NetTrader.Indicator.Utilities
                     row.CreateCell(4).SetCellValue(item.isDiffereneAmountDecreasing);
                     if (rsiData != null)
                     {
-                        row.CreateCell(5).SetCellValue(rsiData.RSI.Value);
+                        row.CreateCell(5).SetCellValue(rsiData.RS.Value);
+                        row.CreateCell(6).SetCellValue(rsiData.RSI.Value);
                     }
-                    row.CreateCell(6).SetCellValue(item.ClosingValue);
+                    row.CreateCell(7).SetCellValue(item.ClosingValue);
+                    row.CreateCell(8).SetCellValue(item.ActionSignal.ToString());
                     i++;
                 }
 
