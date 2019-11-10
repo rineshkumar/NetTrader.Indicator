@@ -4,7 +4,7 @@ namespace NetTrader.Indicator
 {
     public class MACDHistogramData
     {
-        internal string isConvergingOrDiverging;
+        public MomentumDirection isConvergingOrDiverging;
 
         public DateTime DataDate { get; set; }
         public double? EmaLineDifference { get; set; }

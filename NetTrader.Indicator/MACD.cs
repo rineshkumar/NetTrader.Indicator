@@ -3,6 +3,16 @@ using System.Linq;
 
 namespace NetTrader.Indicator
 {
+    public enum MomentumDirection
+    {
+        PositiveConvergence,
+        PositiveDivergence,
+        NegativeConvergence,
+        NegativeDivergence,
+        NoChange,
+        PositiveToNegativeDivergence,
+        NegativeToPositiveDivergence
+    }
     public class MACD : IndicatorCalculatorBase<MACDSerie>
     {
         protected override List<Ohlc> OhlcList { get; set; }
@@ -136,20 +146,20 @@ namespace NetTrader.Indicator
                 {
                     if (currentDataPoint > previousDataPoint)
                     {
-                        currentElement.isConvergingOrDiverging = "PositiveDiverging";
+                        currentElement.isConvergingOrDiverging = MomentumDirection.PositiveDivergence;
                     }
                     else if (currentDataPoint < previousDataPoint)
                     {
-                        currentElement.isConvergingOrDiverging = "PositiveConverging";
+                        currentElement.isConvergingOrDiverging = MomentumDirection.PositiveConvergence;
                     }
                 }
                 else if (currentDataPoint == 0)
                 {
-                    currentElement.isConvergingOrDiverging = "PositiveConverging";
+                    currentElement.isConvergingOrDiverging = MomentumDirection.PositiveConvergence; ;
                 }
                 else if (currentDataPoint < 0)
                 {
-                    currentElement.isConvergingOrDiverging = "NegativeDiverging";
+                    currentElement.isConvergingOrDiverging = MomentumDirection.PositiveToNegativeDivergence;
                 }
 
             }
@@ -158,16 +168,16 @@ namespace NetTrader.Indicator
 
                 if (currentDataPoint > 0)
                 {
-                    currentElement.isConvergingOrDiverging = "PositiveDiverging";
+                    currentElement.isConvergingOrDiverging = MomentumDirection.PositiveDivergence;
 
                 }
                 else if (currentDataPoint == 0)
                 {
-                    currentElement.isConvergingOrDiverging = "ZeroDivergence";
+                    currentElement.isConvergingOrDiverging = MomentumDirection.NoChange;
                 }
                 else if (currentDataPoint < 0)
                 {
-                    currentElement.isConvergingOrDiverging = "NegativeDiverging";
+                    currentElement.isConvergingOrDiverging = MomentumDirection.NegativeDivergence;
                 }
 
             }
@@ -176,22 +186,22 @@ namespace NetTrader.Indicator
 
                 if (currentDataPoint > 0)
                 {
-                    currentElement.isConvergingOrDiverging = "PositiveDiverging";
+                    currentElement.isConvergingOrDiverging = MomentumDirection.NegativeToPositiveDivergence;
 
                 }
                 else if (currentDataPoint == 0)
                 {
-                    currentElement.isConvergingOrDiverging = "NegativeConverging";
+                    currentElement.isConvergingOrDiverging = MomentumDirection.NegativeConvergence;
                 }
                 else if (currentDataPoint < 0)
                 {
                     if (currentDataPoint > previousDataPoint)
                     {
-                        currentElement.isConvergingOrDiverging = "NegativeConverging";
+                        currentElement.isConvergingOrDiverging = MomentumDirection.NegativeConvergence; ;
                     }
                     else if (currentDataPoint < previousDataPoint)
                     {
-                        currentElement.isConvergingOrDiverging = "NegativeDiverging";
+                        currentElement.isConvergingOrDiverging = MomentumDirection.NegativeDivergence;
                     }
                 }
 

@@ -33,7 +33,7 @@ namespace NetTrader.Indicator.Utilities
                     var row = sheet.CreateRow(i);
                     var rsiData = rsiSeries.rsiDataPoints.Where(x => x.Date == item.DataDate).FirstOrDefault();
                     row.CreateCell(0).SetCellValue(item.DataDate.Date.ToString("dd/MM/yyyy"));
-                    row.CreateCell(1).SetCellValue(item.isConvergingOrDiverging);
+                    row.CreateCell(1).SetCellValue(item.isConvergingOrDiverging.ToString());
                     row.CreateCell(2).SetCellValue(item.EmaLineDifference.Value);
                     row.CreateCell(3).SetCellValue(item.changeInDivergenceMomentum.Value);
                     row.CreateCell(4).SetCellValue(item.isDiffereneAmountDecreasing);
