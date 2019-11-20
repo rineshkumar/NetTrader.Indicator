@@ -10,10 +10,7 @@ namespace NetTrader.Indicator
         Bullish,
         Unknown
     }
-    public enum SignalTypes
-    {
-        BuyWithUpperLimitSet = 2
-    }
+
     public enum MomentumDirection
     {
         PositiveConvergence,
@@ -157,7 +154,7 @@ namespace NetTrader.Indicator
             if (GetMarketSentiment(macdSerie, i) == MarketSentiment.Bearish
                 && IsBullishTrendContinuing(macdSerie, i) && IsTrendEnding(macdSerie, i) /*&& macdSerie.MACDHistogramDataList.ElementAt(i).EmaLineDifference < -.3*/)
             {
-                macdSerie.MACDHistogramDataList.ElementAt(i).ActionSignal = SignalTypes.BuyWithUpperLimitSet;
+                macdSerie.MACDHistogramDataList.ElementAt(i).ActionSignal = SignalTypes.MacdBuyWithUpperLimitSet;
             }
             //else if (IsBullishTrendStarting(macdSerie.MACDHistogramDataList.ElementAt(i)))
             //{

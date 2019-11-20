@@ -102,6 +102,7 @@
     <Compile Include="RsiDataPoint.cs" />
     <Compile Include="RSISerie.cs" />
     <Compile Include="SAR.cs" />
+    <Compile Include="SignalTypes.cs" />
     <Compile Include="SingleDoubleSerie.cs" />
     <Compile Include="SingleIntSerie.cs" />
     <Compile Include="SMAV2.cs" />

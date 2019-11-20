@@ -16,6 +16,7 @@ namespace NetTrader.Indicator
     {
         public DateTime date { get; set; }
         public double? data { get; set; }
+        public List<SignalTypes> SmaIndicatorSignals { get; set; }
     }
     public class SingleDoubleSerieV2 : IIndicatorSerie
     {
