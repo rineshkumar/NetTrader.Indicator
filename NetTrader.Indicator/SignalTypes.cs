@@ -1,11 +1,10 @@
 ﻿namespace NetTrader.Indicator
 {
-    public enum SignalTypes
+    public enum BuySellSignal
     {
         MacdBuyWithUpperLimitSet = 2,
-        SmaStmaLessThanLtMa = 3,
-        SmaLtmaLessThanClosingPrice = 4
-
-
+        StmaLessThanLtma = 3,
+        LtmaLessThanClosingPrice = 4,
+        MacdNegativeBelowThree = 5
     }
 }

@@ -16,7 +16,19 @@ namespace NetTrader.Indicator
     {
         public DateTime date { get; set; }
         public double? data { get; set; }
-        public List<SignalTypes> SmaIndicatorSignals { get; set; }
+        public List<BuySellSignal> SmaIndicatorSignals { get; set; }
+
+        internal void findSignals(SingleDoubleSeriesDataPointV2 longTermSingleDoubleSeriesData, List<BuySellSignal> signals, double closingValue)
+        {
+            if (this.data < longTermSingleDoubleSeriesData.data)
+            {
+                signals.Add(BuySellSignal.StmaLessThanLtma);
+            }
+            if (closingValue < longTermSingleDoubleSeriesData.data)
+            {
+                signals.Add(BuySellSignal.LtmaLessThanClosingPrice);
+            }
+        }
     }
     public class SingleDoubleSerieV2 : IIndicatorSerie
     {

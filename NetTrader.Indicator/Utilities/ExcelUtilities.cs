@@ -1,5 +1,7 @@
 ﻿using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -30,10 +32,15 @@ namespace NetTrader.Indicator.Utilities
                 int i = 1;
                 foreach (var item in subset)
                 {
+
+                    List<BuySellSignal> signals = new List<BuySellSignal>();
+                    signals = MACD.SetSignalType(item, signals);
                     var row = sheet.CreateRow(i);
                     var rsiData = rsiSeries.rsiDataPoints.Where(x => x.Date == item.DataDate).FirstOrDefault();
                     var shortTermSingleDoubleSeriesData = shorttermSingleDoubleSerieV2.Values.Where(x => x.date == item.DataDate).FirstOrDefault();
                     var longTermSingleDoubleSeriesData = longtermSingleDoubleSerieV2.Values.Where(x => x.date == item.DataDate).FirstOrDefault();
+                    shortTermSingleDoubleSeriesData.findSignals(longTermSingleDoubleSeriesData, signals, item.ClosingValue);
+
                     row.CreateCell(0).SetCellValue(item.DataDate.Date.ToString("dd/MM/yyyy"));
                     row.CreateCell(1).SetCellValue(item.isConvergingOrDiverging.ToString());
                     row.CreateCell(2).SetCellValue(item.EmaLineDifference.Value);
@@ -51,7 +58,7 @@ namespace NetTrader.Indicator.Utilities
                         row.CreateCell(9).SetCellValue(shortTermSingleDoubleSeriesData.data.Value < longTermSingleDoubleSeriesData.data.Value);
                     }
                     row.CreateCell(10).SetCellValue(item.ClosingValue);
-                    row.CreateCell(11).SetCellValue(item.ActionSignal.ToString());
+                    row.CreateCell(11).SetCellValue(string.Join(Environment.NewLine, signals.ToArray()));
                     i++;
                 }
 
@@ -65,5 +72,6 @@ namespace NetTrader.Indicator.Utilities
             //Write to specific Rows in the excel file 
 
         }
+
     }
 }
