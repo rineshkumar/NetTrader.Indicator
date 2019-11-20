@@ -155,7 +155,7 @@ namespace NetTrader.Indicator
         {
 
             if (GetMarketSentiment(macdSerie, i) == MarketSentiment.Bearish
-                && IsBullishTrendContinuing(macdSerie, i) && IsTrendEnding(macdSerie, i) && macdSerie.MACDHistogramDataList.ElementAt(i).EmaLineDifference < -.3)
+                && IsBullishTrendContinuing(macdSerie, i) && IsTrendEnding(macdSerie, i) /*&& macdSerie.MACDHistogramDataList.ElementAt(i).EmaLineDifference < -.3*/)
             {
                 macdSerie.MACDHistogramDataList.ElementAt(i).ActionSignal = SignalTypes.BuyWithUpperLimitSet;
             }

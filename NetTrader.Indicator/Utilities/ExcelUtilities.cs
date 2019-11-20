@@ -7,7 +7,7 @@ namespace NetTrader.Indicator.Utilities
 {
     public class ExcelUtilities
     {
-        public static void WriteMacdhistogramDataToExcel(MACDSerie mACDSerie, RSISerie rsiSeries, string sheetName)
+        public static void WriteMacdhistogramDataToExcel(MACDSerie mACDSerie, RSISerie rsiSeries, SingleDoubleSerieV2 shorttermSingleDoubleSerieV2, SingleDoubleSerieV2 longtermSingleDoubleSerieV2, string sheetName)
         {
             var subset = mACDSerie.MACDHistogramDataList.GetRange(mACDSerie.MACDHistogramDataList.Count - 60, 60);
             //Search For the template file
@@ -32,6 +32,8 @@ namespace NetTrader.Indicator.Utilities
                 {
                     var row = sheet.CreateRow(i);
                     var rsiData = rsiSeries.rsiDataPoints.Where(x => x.Date == item.DataDate).FirstOrDefault();
+                    var shortTermSingleDoubleSeriesData = shorttermSingleDoubleSerieV2.Values.Where(x => x.date == item.DataDate).FirstOrDefault();
+                    var longTermSingleDoubleSeriesData = longtermSingleDoubleSerieV2.Values.Where(x => x.date == item.DataDate).FirstOrDefault();
                     row.CreateCell(0).SetCellValue(item.DataDate.Date.ToString("dd/MM/yyyy"));
                     row.CreateCell(1).SetCellValue(item.isConvergingOrDiverging.ToString());
                     row.CreateCell(2).SetCellValue(item.EmaLineDifference.Value);
@@ -42,8 +44,14 @@ namespace NetTrader.Indicator.Utilities
                         row.CreateCell(5).SetCellValue(rsiData.RS.Value);
                         row.CreateCell(6).SetCellValue(rsiData.RSI.Value);
                     }
-                    row.CreateCell(7).SetCellValue(item.ClosingValue);
-                    row.CreateCell(8).SetCellValue(item.ActionSignal.ToString());
+                    if (longTermSingleDoubleSeriesData != null && shortTermSingleDoubleSeriesData != null)
+                    {
+                        row.CreateCell(7).SetCellValue(shortTermSingleDoubleSeriesData.data.Value);
+                        row.CreateCell(8).SetCellValue(longTermSingleDoubleSeriesData.data.Value);
+                        row.CreateCell(9).SetCellValue(shortTermSingleDoubleSeriesData.data.Value < longTermSingleDoubleSeriesData.data.Value);
+                    }
+                    row.CreateCell(10).SetCellValue(item.ClosingValue);
+                    row.CreateCell(11).SetCellValue(item.ActionSignal.ToString());
                     i++;
                 }
 

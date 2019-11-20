@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NetTrader.Indicator
 {
@@ -13,6 +10,20 @@ namespace NetTrader.Indicator
         public SingleDoubleSerie()
         {
             Values = new List<double?>();
+        }
+    }
+    public class SingleDoubleSeriesDataPointV2
+    {
+        public DateTime date { get; set; }
+        public double? data { get; set; }
+    }
+    public class SingleDoubleSerieV2 : IIndicatorSerie
+    {
+        public List<SingleDoubleSeriesDataPointV2> Values { get; set; }
+
+        public SingleDoubleSerieV2()
+        {
+            Values = new List<SingleDoubleSeriesDataPointV2>();
         }
     }
 }

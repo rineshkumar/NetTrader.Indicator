@@ -104,6 +104,7 @@
     <Compile Include="SAR.cs" />
     <Compile Include="SingleDoubleSerie.cs" />
     <Compile Include="SingleIntSerie.cs" />
+    <Compile Include="SMAV2.cs" />
     <Compile Include="SMA.cs" />
     <Compile Include="Statistics.cs" />
     <Compile Include="TRIX.cs" />
@@ -117,6 +118,7 @@
   <ItemGroup>
     <Content Include="App.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <None Include="MacdHDataTemplate.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

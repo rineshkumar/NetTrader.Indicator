@@ -21,10 +21,16 @@ namespace NetTrader.Indicator.Test.ForPoc
                 MACDSerie macdSeries = GetMacdSeries(macd, stockName);
                 RSI rsi = new RSI(14);
                 RSISerie rsiSeries = GetRsiSeries(rsi, stockName);
-                ExcelUtilities.WriteMacdhistogramDataToExcel(macdSeries, rsiSeries, stockName);
+                SMAV2 shortTermSma = new SMAV2(14);
+                SingleDoubleSerieV2 shorttermSingleDoubleSerieV2 = GetSingleDoubleSeriesV2(shortTermSma, stockName);
+                SMAV2 longTermSma = new SMAV2(60);
+                SingleDoubleSerieV2 longtermSingleDoubleSerieV2 = GetSingleDoubleSeriesV2(longTermSma, stockName);
+
+                ExcelUtilities.WriteMacdhistogramDataToExcel(macdSeries, rsiSeries, shorttermSingleDoubleSerieV2, longtermSingleDoubleSerieV2, stockName);
             }
 
         }
+
 
         private static void DownloadAllStockFiles()
         {
@@ -65,6 +71,18 @@ namespace NetTrader.Indicator.Test.ForPoc
             //ExcelUtilities.WriteMacdhistogramDataToExcel(serie, stockName);
             return serie;
         }
+        private static SingleDoubleSerieV2 GetSingleDoubleSeriesV2(SMAV2 shortTermSma, string stockName)
+        {
+            string downloadFolderName = ConfigurationManager.AppSettings["downloadLocation"];
+            shortTermSma.Load(downloadFolderName + stockName + ".ax.csv");
+
+            SingleDoubleSerieV2 serie = shortTermSma.Calculate();
+
+            //ExcelUtilities.WriteMacdhistogramDataToExcel(serie, stockName);
+            return serie;
+
+        }
+
         private static void CleanFolder()
         {
             string downloadFolderName = ConfigurationManager.AppSettings["downloadLocation"];
