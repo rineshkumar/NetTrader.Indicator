@@ -4,7 +4,8 @@
     {
         MacdBuyWithUpperLimitSet = 2,
         StmaLessThanLtma = 3,
-        LtmaLessThanClosingPrice = 4,
-        MacdNegativeBelowThree = 5
+        ClosingPriceLessThanLtma = 4,
+        MacdNegativeBelowThree = 5,
+        StrongDifferenceClosingPriceLtma = 6
     }
 }

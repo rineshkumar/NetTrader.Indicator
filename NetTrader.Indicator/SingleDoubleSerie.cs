@@ -22,12 +22,17 @@ namespace NetTrader.Indicator
         {
             if (this.data < longTermSingleDoubleSeriesData.data)
             {
-                signals.Add(BuySellSignal.StmaLessThanLtma);
+                //signals.Add(BuySellSignal.StmaLessThanLtma);
             }
             if (closingValue < longTermSingleDoubleSeriesData.data)
             {
-                signals.Add(BuySellSignal.LtmaLessThanClosingPrice);
+                signals.Add(BuySellSignal.ClosingPriceLessThanLtma);
+                if (longTermSingleDoubleSeriesData.data - closingValue > .5)
+                {
+                    signals.Add(BuySellSignal.StrongDifferenceClosingPriceLtma);
+                }
             }
+
         }
     }
     public class SingleDoubleSerieV2 : IIndicatorSerie

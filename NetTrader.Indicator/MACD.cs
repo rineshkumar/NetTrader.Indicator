@@ -153,7 +153,7 @@ namespace NetTrader.Indicator
 
 
             if (GetMarketSentiment(mACDHistogramData) == MarketSentiment.Bearish
-                && IsBullishTrendContinuing(mACDHistogramData) && IsTrendEnding(mACDHistogramData) /*&& macdSerie.MACDHistogramDataList.ElementAt(i).EmaLineDifference < -.3*/)
+                && IsBullishTrendContinuing(mACDHistogramData) /*&& IsTrendEnding(mACDHistogramData)*/ /*&& macdSerie.MACDHistogramDataList.ElementAt(i).EmaLineDifference < -.3*/)
             {
                 signals.Add(BuySellSignal.MacdBuyWithUpperLimitSet);
                 if (mACDHistogramData.EmaLineDifference < -.3)
@@ -176,7 +176,8 @@ namespace NetTrader.Indicator
 
         private static bool IsBullishTrendContinuing(MACDHistogramData mACDHistogramData)
         {
-            return mACDHistogramData.isConvergingOrDiverging == MomentumDirection.NegativeDivergence;
+            return mACDHistogramData.isConvergingOrDiverging == MomentumDirection.NegativeDivergence
+                || mACDHistogramData.isConvergingOrDiverging == MomentumDirection.PositiveToNegativeDivergence;
         }
 
 
@@ -193,6 +194,7 @@ namespace NetTrader.Indicator
             {
                 case MomentumDirection.NegativeDivergence:
                 case MomentumDirection.NegativeConvergence:
+                case MomentumDirection.PositiveToNegativeDivergence:
                     marketSentiment = MarketSentiment.Bearish;
                     break;
 

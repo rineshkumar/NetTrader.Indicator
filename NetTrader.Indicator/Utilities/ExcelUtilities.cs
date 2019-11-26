@@ -46,11 +46,11 @@ namespace NetTrader.Indicator.Utilities
                     row.CreateCell(2).SetCellValue(item.EmaLineDifference.Value);
                     row.CreateCell(3).SetCellValue(item.changeInDivergenceMomentum.Value);
                     row.CreateCell(4).SetCellValue(item.isDiffereneAmountDecreasing);
-                    if (rsiData != null)
-                    {
-                        row.CreateCell(5).SetCellValue(rsiData.RS.Value);
-                        row.CreateCell(6).SetCellValue(rsiData.RSI.Value);
-                    }
+                    //if (rsiData != null)
+                    //{
+                    //    row.CreateCell(5).SetCellValue(rsiData.RS.Value);
+                    //    row.CreateCell(6).SetCellValue(rsiData.RSI.Value);
+                    //}
                     if (longTermSingleDoubleSeriesData != null && shortTermSingleDoubleSeriesData != null)
                     {
                         row.CreateCell(7).SetCellValue(shortTermSingleDoubleSeriesData.data.Value);
